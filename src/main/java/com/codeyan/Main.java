@@ -1,21 +1,25 @@
 package com.codeyan;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.util.List;
+import java.lang.Thread;
+import java.util.stream.IntStream;
 
 public class Main {
     public static void main(String[] args) {
-        // Makes a system call to list all files on ./
-        try {
-            var process = Runtime.getRuntime().exec("ls"); // Unix-like system command
-            var reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                System.out.println(line);
+        List<Thread> threads = IntStream.range(0, 65)
+                .mapToObj(i -> new Thread(
+                        () -> System.out.println("Thread " + i + " is Running. ID: " + Thread.currentThread().getId())))
+                .toList();
+
+        threads.forEach(Thread::start);
+        threads.forEach(thread -> {
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                thread.currentThread().interrupt();
+                System.err.println("Thread " + thread.getId() + " was interrupted.");
             }
-            process.waitFor();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        });
+
     }
 }
