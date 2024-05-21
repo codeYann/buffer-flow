@@ -2,14 +2,14 @@ package com.codeyan.Consumer;
 
 import com.codeyan.Buffer.Buffer;
 
-public record Consumer(Buffer buffer) implements Runnable {
+public record Consumer(int id, Buffer buffer) implements Runnable {
     @Override
     public void run() {
         try {
             while (true) {
                 var item = buffer.consume();
-                System.out.printf("Consumed: %s%n", item);
-                Thread.sleep(1800);
+                System.out.printf("Consumer: %d, Consumed: %s%n", id, item);
+                Thread.sleep(500);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
