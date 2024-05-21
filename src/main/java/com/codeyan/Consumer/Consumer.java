@@ -8,8 +8,8 @@ public record Consumer(Buffer buffer) implements Runnable {
         try {
             while (true) {
                 var item = buffer.consume();
-                System.out.println(STR."Consumed: \{item}");
-                Thread.sleep(400);
+                System.out.printf("Consumed: %s%n", item);
+                Thread.sleep(1800);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
