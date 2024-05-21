@@ -13,7 +13,7 @@ public record Producer<T>(Buffer buffer, Supplier<T> supplier) implements Runnab
                 // Create an item for the buffer;
                 T item = supplier.get();
                 buffer.produce(item);
-                System.out.println(STR."Produced: \{item}");
+                System.out.printf("Produced: %s%n", item);
                 Thread.sleep(300);
             }
         } catch (InterruptedException e) {
