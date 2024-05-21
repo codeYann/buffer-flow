@@ -1,25 +1,27 @@
 package com.codeyan;
 
-import java.util.List;
-import java.lang.Thread;
-import java.util.stream.IntStream;
+import com.codeyan.Buffer.Buffer;
+import com.codeyan.Consumer.Consumer;
+import com.codeyan.Producer.Producer;
+
+import java.util.Random;
+import java.util.function.Supplier;
 
 public class Main {
     public static void main(String[] args) {
-        List<Thread> threads = IntStream.range(0, 65)
-                .mapToObj(i -> new Thread(
-                        () -> System.out.println("Thread " + i + " is Running. ID: " + Thread.currentThread().getId())))
-                .toList();
+        Buffer<Integer> buffer = new Buffer<Integer>(15);
 
-        threads.forEach(Thread::start);
-        threads.forEach(thread -> {
-            try {
-                thread.join();
-            } catch (InterruptedException e) {
-                thread.currentThread().interrupt();
-                System.err.println("Thread " + thread.getId() + " was interrupted.");
-            }
-        });
+        Random random = new Random();
 
+        Supplier<Integer> supplier = () -> random.nextInt(25);
+
+        Producer<Integer> producer = new Producer<Integer>(buffer, supplier);
+        Consumer consumer = new Consumer(buffer);
+
+        Thread thread = new Thread(producer);
+        Thread thread2 = new Thread(consumer);
+
+        thread.start();
+        thread2.start();
     }
 }
