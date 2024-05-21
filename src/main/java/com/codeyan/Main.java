@@ -9,7 +9,7 @@ import java.util.function.Supplier;
 
 public class Main {
     public static void main(String[] args) {
-        Buffer<Integer> buffer = new Buffer<Integer>(15);
+        Buffer<Integer> buffer = new Buffer<Integer>(3);
 
         Random random = new Random();
 
