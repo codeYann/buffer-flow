@@ -4,7 +4,7 @@ import com.codeyan.Buffer.Buffer;
 
 import java.util.function.Supplier;
 
-public record Producer<T>(Buffer buffer, Supplier<T> supplier) implements Runnable {
+public record Producer<T>(int id, Buffer buffer, Supplier<T> supplier) implements Runnable {
 
     @Override
     public void run() {
@@ -13,8 +13,8 @@ public record Producer<T>(Buffer buffer, Supplier<T> supplier) implements Runnab
                 // Create an item for the buffer;
                 T item = supplier.get();
                 buffer.produce(item);
-                System.out.printf("Produced: %s%n", item);
-                Thread.sleep(300);
+                System.out.printf("Producer: %d, Produced: %s%n", id, item);
+                Thread.sleep(1);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
